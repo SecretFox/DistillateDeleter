@@ -89,7 +89,7 @@ class com.fox.dd.Main {
 	// some delay to ensure player has received the items
 	private function CheckForDeletionBuffer(){
 		clearTimeout(buffer);
-		var buffer = setTimeout(Delegate.create(this, CheckForDeletion), 500);
+		buffer = setTimeout(Delegate.create(this, CheckForDeletion), 500);
 	}
 	
 	private function CheckForDeletion(){
