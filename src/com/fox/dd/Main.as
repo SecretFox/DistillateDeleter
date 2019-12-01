@@ -10,7 +10,7 @@ class com.fox.dd.Main {
 	
 	private var delGlyph:DistributedValue;
 	private var delTreshHold:DistributedValue;
-	static var SIGNETSTRING:String;
+	static var DISTSTRING:String;
 	
 	static var UpdateCalled:Signal;
 	private var buffer;
@@ -31,14 +31,14 @@ class com.fox.dd.Main {
 		
 		switch(LDBFormat.GetCurrentLanguageCode()){
 			case "fr":
-				SIGNETSTRING = "Distillat";
+				DISTSTRING = "Distillat";
 				return
 			case "de":
-				SIGNETSTRING = "destillat";
+				DISTSTRING = "destillat";
 				return
 			case "en":
 			default:
-				SIGNETSTRING = "Distillate";
+				DISTSTRING = "Distillate";
 				return
 		}
 	}
@@ -50,7 +50,7 @@ class com.fox.dd.Main {
 	}
 	public function Activate(config:Archive){
 		delGlyph.SetValue(config.FindEntry("glyphs", true));
-		delTreshHold.SetValue(config.FindEntry("treshoold", 400));
+		delTreshHold.SetValue(config.FindEntry("treshold", 400));
 	}
 	public function Deactivate(){
 		var conf:Archive = new Archive();
@@ -66,8 +66,8 @@ class com.fox.dd.Main {
 	// bit better than going through inventory whenever new items get added
 	private function HookRewards(){
 		if (Agentwindow.GetValue()){
-			if (!_global.com.fox.dd.Hooked){
-				if (!_global.GUI.AgentSystem.AgentSystemContent.prototype.UpdateCurrentMissionVisibility){
+			if (!_global.GUI.AgentSystem.AgentSystemContent.prototype.DeleteDistillates){
+				if (!_global.GUI.AgentSystem.AgentSystemContent.prototype.SlotCloseMissionReward){
 					setTimeout(Delegate.create(this, HookRewards), 100);
 					return
 				}
@@ -81,15 +81,13 @@ class com.fox.dd.Main {
 				};
 				f.base = _global.GUI.AgentSystem.AgentSystemContent.prototype.SlotCloseMissionReward;
 				_global.GUI.AgentSystem.AgentSystemContent.prototype.SlotCloseMissionReward = f;
-				
-				_global.com.fox.dd.Hooked = true;
 			}
 		}
 	}
 	// some delay to ensure player has received the items
 	private function CheckForDeletionBuffer(){
 		clearTimeout(buffer);
-		var buffer = setTimeout(Delegate.create(this, CheckForDeletion), 500);
+		buffer = setTimeout(Delegate.create(this, CheckForDeletion), 500);
 	}
 	
 	private function CheckForDeletion(){
@@ -100,7 +98,7 @@ class com.fox.dd.Main {
 		for (var column in backbag.m_DefaultInventoryBox.m_ItemSlots) {
 			for (var row in backbag.m_DefaultInventoryBox.m_ItemSlots[column]) {
 				var item:InventoryItem = backbag.m_DefaultInventoryBox.m_ItemSlots[column][row]["m_ItemData"];
-				if (item.m_Name.indexOf(SIGNETSTRING) >= 0 &&
+				if (item.m_Name.indexOf(DISTSTRING) >= 0 &&
 					item.m_Deleteable &&
 					item.m_TokenCurrencySellPrice1 == 0 &&
 					item.m_XP <= tresHold && 

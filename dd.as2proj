@@ -50,8 +50,8 @@
   <!-- Executed before build -->
   <preBuildCommand />
   <!-- Executed after build -->
-  <postBuildCommand alwaysRun="False">xcopy "$(ProjectDir)\bin\*.*" "G:\SWL\Secret World Legends\Data\Gui\Custom\Flash\dd\*.*" /e /y
-xcopy "$(ProjectDir)\src\mod\*.*" "G:\SWL\Secret World Legends\Data\Gui\Custom\Flash\dd\*.*" /e /y
+  <postBuildCommand alwaysRun="False">xcopy "$(ProjectDir)\bin\*.*" "F:\SWL\Secret World Legends\Data\Gui\Custom\Flash\dd\*.*" /e /y
+xcopy "$(ProjectDir)\src\mod\*.*" "F:\SWL\Secret World Legends\Data\Gui\Custom\Flash\dd\*.*" /e /y
 
 xcopy "$(ProjectDir)\bin\*.*" "./deployment/dd/*.*" /e /y
 xcopy "$(ProjectDir)\src\mod\*.*" "./deployment/dd/*.*" /e /y</postBuildCommand>
