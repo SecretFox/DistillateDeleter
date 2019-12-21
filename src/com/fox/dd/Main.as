@@ -63,7 +63,7 @@ class com.fox.dd.Main {
 		UpdateCalled.Disconnect(CheckForDeletionBuffer, this);
 	}
 	
-	// bit better than going through inventory whenever new items get added
+	// small delay for agenttweaks support
 	private function HookRewards(){
 		if (Agentwindow.GetValue()){
 			if (!_global.GUI.AgentSystem.AgentSystemContent.prototype.DeleteDistillates){
@@ -71,16 +71,23 @@ class com.fox.dd.Main {
 					setTimeout(Delegate.create(this, HookRewards), 100);
 					return
 				}
-				// Add delete function to AgentSystemContent, delegate to keep scope
 				_global.GUI.AgentSystem.AgentSystemContent.prototype.DeleteDistillates = Delegate.create(this, CheckForDeletionBuffer);
 				// Call for it after claiming rewards
 				var f = function() {
 					arguments.callee.base.apply(this, arguments);
 					this.DeleteDistillates();
-					
 				};
 				f.base = _global.GUI.AgentSystem.AgentSystemContent.prototype.SlotCloseMissionReward;
 				_global.GUI.AgentSystem.AgentSystemContent.prototype.SlotCloseMissionReward = f;
+			}
+			setTimeout(Delegate.create(this, HookAgentTweaks), 500);
+		}
+	}
+	private function HookAgentTweaks(){
+		if (_root.agentsystem.m_Window.m_Content.m_MissionList.u_acceptAll){
+			if (!_root.agentsystem.m_Window.m_Content.m_MissionList.u_acceptAll.Hook){
+				_root.agentsystem.m_Window.m_Content.m_MissionList.u_acceptAll.addEventListener("click", this, "CheckForDeletionBuffer");
+				_root.agentsystem.m_Window.m_Content.m_MissionList.u_acceptAll.Hook = true;
 			}
 		}
 	}
