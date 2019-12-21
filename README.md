@@ -1,6 +1,5 @@
 # DistillateDeleter
-SWL mod tha automatically deletes small distillates from inventory.  
-Distillates get deleted after player claims agent mission reward.  
+SWL mod tha automatically deletes small distillates from inventory after claiming agent mission rewards.  
 
 
 ## Options  
