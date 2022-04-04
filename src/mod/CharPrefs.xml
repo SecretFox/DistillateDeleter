@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?> 
+<Root>
+	<Value name="DD" value="true" />
+	<Value name="DD_x" value="100" />
+	<Value name="DD_y" value="100" />
+	<Value name="DD_SafeMode" value="true" />
+	<Archive name="DD_Cfg" />
+</Root>

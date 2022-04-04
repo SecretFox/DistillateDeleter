@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <style>
+      #code {
+        color: crimson;
+        font-weight: bold;
+        background-color: #f1f1f1;
+        padding: 2px;
+        font-size: 105%;
+      }
+      #code2 {
+        color: black;
+        background-color: #f1f1f1;
+        padding: 2px;
+        font-size: 105%;
+      }
+    </style>
+  </head>
+  <Body style="background-color:#d3d3d3;">
+    <p>
+      Capitalization is ignored<br>
+      You can use item Id instead of item name<br>
+      Must contain at least 5 letters or numbers<br>
+      * Matches 0 or more characters<br>
+      ? Matches any single character<br>
+      <br>
+    </p>
+    <form id="input">
+      <label for="fname">Search lines:</label><br>
+      <textarea rows="4" cols="50" name="comment" id="Custom" autocomplete="off">P?Re Anima*Potency*</textarea>
+      <select id="lang">
+        <option value="English">English</option>
+        <option value="French">French</option>
+        <option value="German">German</option>
+      </select>
+      
+      
+      <input type="submit" value="Submit">
+    </form>
+    <p id="Items"></p>
+    <script>
+      var English;
+      var French;
+      var German;
+      
+      function match(needle, haystack){
+        if (needle.length == 0 && haystack.length == 0)
+          return true;
+        
+        if (needle.length == 0)
+          return false;
+          
+        if ( haystack.length == 0)
+        {
+          if ( needle[0] != "*") return false;
+          return match(needle.substr(1), haystack);
+        }
+
+        if (needle[0] == '?' || needle[0] == haystack[0])
+          return match(needle.substring(1), haystack.substring(1));
+        
+        if (needle[0] == '*')
+          return match(needle.substring(1), haystack) || match(needle, haystack.substring(1));
+        return false;
+      }
+      
+      function SearchItems()
+      {
+        let target = document.getElementById("Items");
+        target.innerHTML = "";
+        
+        let search = document.getElementById("Custom").value;
+        let lang = document.getElementById("lang").value;
+        search = search.toLowerCase().split("\n");
+        if (search != null)
+        {
+          let langs = [
+            ["English", English],
+            ["French", French],
+            ["German", German]
+          ];
+          let append = [];
+          for( var i in langs)
+          {
+            if (langs[i][0] == lang)
+            {
+              for( var s in search)
+              {
+                if ( search[s] != "")
+                {
+                  for ( var itemID in langs[i][1])
+                  {
+                    if ( search[s] == langs[i][1][itemID].toLowerCase() ||
+                      search[s] == itemID ||
+                      match(search[s], langs[i][1][itemID].toLowerCase()))
+                    {
+                      append.push("<code id=\"code\">" + langs[i][1][itemID]+ "</code>&nbsp;&nbsp;&nbsp;matches&nbsp;&nbsp;&nbsp;<code id=\"code2\">" + search[s]+"</code>");
+                      if ( append.length == 10000)
+                      {
+                        break
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+          if ( append.length == 0)
+          {
+            target.innerHTML += "No matches found";
+          }
+          if ( append.length == 10000)
+          {
+            target.innerHTML += "First 10000 matches<br>";
+          }
+          target.innerHTML += append.join("<br>");
+        }
+        return false;
+      }
+      
+      function init(){
+        
+        async function fetchLang(url, variable, scope) {
+          const response = await fetch(url);
+          const json = await response.json();
+          scope[variable] = json;
+        }
+
+        fetchLang("ItemNames_EN.json", "English", this)
+        fetchLang("ItemNames_FR.json", "French", this)
+        fetchLang("ItemNames_DE.json", "German", this)
+        
+        document.getElementById('input').onsubmit = SearchItems;
+      }
+      window.onload = init;
+    </script>
+  </Body>
+</html>
