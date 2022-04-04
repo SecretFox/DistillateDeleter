@@ -1,4 +1,4 @@
-[![Downloads](https://img.shields.io/github/downloads/SecretFox/DistillateDeleter/total)](https://github.com/SecretFox/DistillateDeleter/releases)  
+[![Downloads](https://img.shields.io/github/downloads/SecretFox/DistillateDeleter/total?style=for-the-badge)](https://github.com/SecretFox/DistillateDeleter/releases)  
 # DistillateDeleter
 Mod for automatically deleting distillates and other items  
 [![Menu](menu.png "Menu")](https://github.com/SecretFox/DistillateDeleter/blob/main/menu.png?raw=true)  
